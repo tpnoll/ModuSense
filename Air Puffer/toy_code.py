@@ -1,18 +1,12 @@
 import time
-#import machine
+import machine
 import pins
 import helper
-#from machine import Pin, PWM
-#from machine import time_pulse_us
 from machine import Pin, PWM, time_pulse_us
 import utime
 
 # The distance in cm at which to blow air
 compress_distance = 4
-
-# Define servo info
-servo = PWM(Pin(15))
-servo.freq(50)
 
 # Define GPIO pins
 trigger_pin = Pin(8, Pin.OUT)
@@ -37,7 +31,6 @@ def wait_for_echo(value, timeout):
 def distance_in_cm():
     send_trigger_pulse(trigger_pin)
     duration = time_pulse_us(echo_pin, 1, 1000000)
-    #print("Duration: " + str(duration))
     distance = (duration / 2) * 0.0343
     return distance
     
@@ -58,19 +51,14 @@ def run_toy():
             print("Turn the servo to compress")
             is_compressed = 1
             helper.blink_board(2, 0.7)
-            for duty in range(0, 90, 1):
-                #helper.blink_board(5, 0.1)
-                servo.duty_u16(duty * 100)
-                time.sleep_ms(10)
+            helper.drive_servo(0, 90)
                 
         # If the servo is compressed and the kid is out of range, decompress
         if((is_compressed == 1) and (this_distance >= compress_distance)):
             print("Turn the servo to de-compress")
             is_compressed = 0
             helper.blink_board(3, 0.5)
-            for duty in range(90, 0, -1):
-                servo.duty_u16(duty * 100)
-                time.sleep_ms(10)
+            helper.drive_servo(90, 0)
                 
         utime.sleep(1)
         
