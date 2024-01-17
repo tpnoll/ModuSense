@@ -1,16 +1,17 @@
 import time
-import machine
+#import machine
 import pins
 import helper
-from machine import Pin, PWM
-from machine import time_pulse_us
+#from machine import Pin, PWM
+#from machine import time_pulse_us
+from machine import Pin, PWM, time_pulse_us
 import utime
 
 # The distance in cm at which to blow air
 compress_distance = 4
 
 # Define servo info
-servo = PWM(Pin(0))
+servo = PWM(Pin(15))
 servo.freq(50)
 
 # Define GPIO pins
@@ -57,7 +58,7 @@ def run_toy():
             print("Turn the servo to compress")
             is_compressed = 1
             helper.blink_board(2, 0.7)
-            for duty in range(40, 130, 1):
+            for duty in range(0, 90, 1):
                 #helper.blink_board(5, 0.1)
                 servo.duty_u16(duty * 100)
                 time.sleep_ms(10)
@@ -67,7 +68,7 @@ def run_toy():
             print("Turn the servo to de-compress")
             is_compressed = 0
             helper.blink_board(3, 0.5)
-            for duty in range(130, 40, -1):
+            for duty in range(90, 0, -1):
                 servo.duty_u16(duty * 100)
                 time.sleep_ms(10)
                 

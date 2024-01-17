@@ -7,7 +7,7 @@ import time
 
 # Import helper functions and toy specific code
 import helper
-#import toy_code
+import toy_code
 
 # Called by boot.py
 def on_board_start():
